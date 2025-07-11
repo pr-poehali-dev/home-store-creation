@@ -22,6 +22,91 @@ import { useState } from "react";
 
 const Index = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<{
+    [key: string]: string;
+  }>({});
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
+
+  const handleImageUpload = (
+    roomName: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setUploadedImages((prev) => ({
+          ...prev,
+          [roomName]: result,
+        }));
+        setShowUploadDialog(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const openUploadDialog = (roomName: string) => {
+    setSelectedRoom(roomName);
+    setShowUploadDialog(true);
+  };
+  const [uploadedImages, setUploadedImages] = useState<{
+    [key: string]: string;
+  }>({});
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
+
+  const handleImageUpload = (
+    roomName: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setUploadedImages((prev) => ({
+          ...prev,
+          [roomName]: result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const openUploadDialog = (roomName: string) => {
+    setSelectedRoom(roomName);
+    setShowUploadDialog(true);
+  };
+  const [uploadedImages, setUploadedImages] = useState<{
+    [key: string]: string;
+  }>({});
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
+
+  const handleImageUpload = (
+    roomName: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setUploadedImages((prev) => ({
+          ...prev,
+          [roomName]: result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const openUploadDialog = (roomName: string) => {
+    setSelectedRoom(roomName);
+    setShowUploadDialog(true);
+  };
   const rooms = [
     {
       name: "Гостиная",
@@ -175,6 +260,56 @@ const Index = () => {
         </div>
       </header>
 
+      {/* Image Upload Dialog */}
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-['Montserrat']">
+              Загрузить фото - {selectedRoom}
+            </DialogTitle>
+            <DialogDescription className="text-gray-600">
+              Выберите изображение для замены в каталоге
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-orange-500 transition-colors">
+              <Icon
+                name="Upload"
+                size={48}
+                className="mx-auto mb-4 text-gray-400"
+              />
+              <p className="text-gray-600 mb-4">
+                Нажмите для выбора изображения
+              </p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(selectedRoom, e)}
+                className="hidden"
+                id="image-upload"
+              />
+              <label htmlFor="image-upload">
+                <Button className="bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700">
+                  Выбрать файл
+                </Button>
+              </label>
+            </div>
+            {uploadedImages[selectedRoom] && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">Превью:</p>
+                <div className="aspect-video rounded-lg overflow-hidden">
+                  <img
+                    src={uploadedImages[selectedRoom]}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600 text-white">
         <div className="absolute inset-0 bg-black/20"></div>
@@ -216,9 +351,9 @@ const Index = () => {
                 key={index}
                 className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 shadow-lg"
               >
-                <div className="aspect-video relative overflow-hidden">
+                <div className="aspect-video relative overflow-hidden group">
                   <img
-                    src={room.image}
+                    src={uploadedImages[room.name] || room.image}
                     alt={room.name}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
@@ -228,6 +363,15 @@ const Index = () => {
                       size={24}
                       className="text-orange-500"
                     />
+                  </div>
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <Button
+                      onClick={() => openUploadDialog(room.name)}
+                      className="bg-white text-orange-500 hover:bg-gray-100"
+                    >
+                      <Icon name="Upload" size={16} className="mr-2" />
+                      Загрузить фото
+                    </Button>
                   </div>
                 </div>
                 <CardHeader>
@@ -239,9 +383,18 @@ const Index = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700">
-                    Смотреть товары
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button className="flex-1 bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700">
+                      Смотреть товары
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => openUploadDialog(room.name)}
+                      className="px-3"
+                    >
+                      <Icon name="Upload" size={16} />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
