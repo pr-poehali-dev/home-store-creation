@@ -6,9 +6,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 const Index = () => {
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const rooms = [
     {
       name: "Гостиная",
@@ -50,10 +63,122 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="absolute top-0 w-full z-50 bg-white/10 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="text-2xl font-bold text-white font-['Montserrat']">
+            Все для дома
+          </div>
+          <div className="flex gap-3">
+            <Dialog open={isAuthOpen} onOpenChange={setIsAuthOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-orange-500"
+                >
+                  <Icon name="User" size={16} className="mr-2" />
+                  Вход
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-['Montserrat']">
+                    Добро пожаловать!
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-600">
+                    Войдите в аккаунт или создайте новый
+                  </DialogDescription>
+                </DialogHeader>
+                <Tabs defaultValue="login" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="login">Вход</TabsTrigger>
+                    <TabsTrigger value="register">Регистрация</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="login" className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="login-email">Email</Label>
+                      <Input
+                        id="login-email"
+                        type="email"
+                        placeholder="example@email.com"
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="login-password">Пароль</Label>
+                      <Input
+                        id="login-password"
+                        type="password"
+                        placeholder="••••••••"
+                        className="w-full"
+                      />
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700">
+                      Войти
+                    </Button>
+                    <div className="text-center text-sm text-gray-500">
+                      ⚠️ Функция в разработке
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="register" className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="register-name">Имя</Label>
+                      <Input
+                        id="register-name"
+                        type="text"
+                        placeholder="Ваше имя"
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="register-email">Email</Label>
+                      <Input
+                        id="register-email"
+                        type="email"
+                        placeholder="example@email.com"
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="register-password">Пароль</Label>
+                      <Input
+                        id="register-password"
+                        type="password"
+                        placeholder="••••••••"
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="register-confirm">Повторите пароль</Label>
+                      <Input
+                        id="register-confirm"
+                        type="password"
+                        placeholder="••••••••"
+                        className="w-full"
+                      />
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-orange-500 to-blue-600 hover:from-orange-600 hover:to-blue-700">
+                      Зарегистрироваться
+                    </Button>
+                    <div className="text-center text-sm text-gray-500">
+                      ⚠️ Функция в разработке
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </DialogContent>
+            </Dialog>
+            <Button className="bg-white text-orange-500 hover:bg-gray-100">
+              <Icon name="ShoppingCart" size={16} className="mr-2" />
+              Корзина
+            </Button>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600 text-white">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-4 py-20 text-center">
+        <div className="relative container mx-auto px-4 py-24 pt-32 text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 font-['Montserrat']">
             Все для дома
           </h1>
