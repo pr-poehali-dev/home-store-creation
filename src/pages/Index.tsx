@@ -51,62 +51,6 @@ const Index = () => {
     setSelectedRoom(roomName);
     setShowUploadDialog(true);
   };
-  const [uploadedImages, setUploadedImages] = useState<{
-    [key: string]: string;
-  }>({});
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<string>("");
-
-  const handleImageUpload = (
-    roomName: string,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setUploadedImages((prev) => ({
-          ...prev,
-          [roomName]: result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const openUploadDialog = (roomName: string) => {
-    setSelectedRoom(roomName);
-    setShowUploadDialog(true);
-  };
-  const [uploadedImages, setUploadedImages] = useState<{
-    [key: string]: string;
-  }>({});
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<string>("");
-
-  const handleImageUpload = (
-    roomName: string,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setUploadedImages((prev) => ({
-          ...prev,
-          [roomName]: result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const openUploadDialog = (roomName: string) => {
-    setSelectedRoom(roomName);
-    setShowUploadDialog(true);
-  };
   const rooms = [
     {
       name: "Гостиная",
